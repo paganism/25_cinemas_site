@@ -34,16 +34,20 @@
     <div class="col-md-12">
       <div class="col-md-9 col-sm-8 col-xs-10">
         {% for title, cinemas, rating, votes, img_url in movie_list %}
+        <hr>
         <div class="col-md-9 col-sm-10 col-xs-10 company-info col-md-offset-3">
           <div class="col-md-4 col-sm-4 col-xs-4 text-center">
-            <img class="image" src="/static/img/950968.jpg" alt="{{ img_url }}" width="150">
+            <img class="image" src="{{ img_url }}" alt="{{ img_url }}" width="150">
           </div>
           <div class="col-md-7 col-sm-6 col-xs-6">
             <h4>{{ title }}</h4>
-            <p>{{ cinemas }}</p>
-            <p>{{ rating }}</p>
-            <p>{{ votes }}</p>
-            <p>{{ img_url }}</p>
+            <hr>
+            <p>Количество кинотеатров: {{ cinemas }}</p>
+            <hr>
+            <p>Текущий рейтинг: {{ rating }}</p>
+            <hr>
+            <p>Количество голосов: {{ votes }}</p>
+            <hr>
           </div>
         </div>
         {% endfor %}
