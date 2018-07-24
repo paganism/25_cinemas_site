@@ -1,21 +1,24 @@
 from flask import Flask, render_template
-from cinemas import get_movie_rating, fetch_afisha_page_data, fetch_cinema_count_and_titles_dict, fetch_proxy_list
+from cinemas import get_complete_info
+# from flask_caching import Cache
+from werkzeug.contrib.cache import FileSystemCache
+import tempfile
+
 
 app = Flask(__name__)
+# cache = Cache(app, config={'CACHE_TYPE': 'simple'})
+# tmpfile = tempfile.gettempdir()
+cache = FileSystemCache(cache_dir=tempfile.gettempdir())
+
 
 @app.route('/')
+# @cache.cached(timeout=1200)
 def films_list():
-    afisha_content = fetch_afisha_page_data()
-    cinema_count_and_titles_dict = fetch_cinema_count_and_titles_dict(afisha_content)
-    proxies = fetch_proxy_list()
-    movie_list = []
-    for movie, count_of_cinema in cinema_count_and_titles_dict.items():
-        rating_ball, rating_count, img_url = get_movie_rating(movie, proxies)
-        movies = [movie, count_of_cinema, rating_ball, rating_count, img_url]
-        movie_list.append(movies)
-    top = 5
-    # title, cinemas, rating, votes
-    print(movie_list)
+    movie_list = cache.get('movie_list')
+    if movie_list is None:
+        movie_list = get_complete_info()
+        #movie_list = sorted(raw_movie_list, key=get_element, reverse=True)
+        cache.set('movie_list', movie_list, timeout=30 * 30)
     return render_template('films_list.html', movie_list=movie_list[:10])
 
 
