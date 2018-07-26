@@ -87,12 +87,13 @@ def get_complete_info():
         thread = threading.Thread(target=get_movie_rating, args=(movie, proxies, out_queue))
         thread.start()
         rating_ball, rating_count, img_url = out_queue.get()
-        # rating_ball, rating_count = get_movie_rating(movie, proxies, out_queue)
         movies = [movie, count_of_cinema, rating_ball, rating_count, img_url]
         movie_list.append(movies)
-    return sorted(movie_list, key=get_element, reverse=True)
-    #top = 5
-    #output_movies_to_console(movie_list, top)
+
+    sorted_list = sorted(movie_list, key=get_element, reverse=True)
+    top_movies = 10
+    return sorted_list[:top_movies]
+
 
 if __name__ == '__main__':
     pass
