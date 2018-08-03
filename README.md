@@ -8,7 +8,7 @@ This [site](http://80.211.16.55:8002) shows top 10 moviesaccording to the rating
 $ export FLASK_APP=server.py
 $ export SECRET_KEY='your secret key'
 ```
-For dedug mode use variable FLASK_DEBUG=1
+For debug mode use variable FLASK_DEBUG=1
 ```
 $export FLASK_DEBUG=1
 $ flask run
