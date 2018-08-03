@@ -22,14 +22,14 @@ def fetch_cinema_count_and_titles_dict(raw_html):
     soup = BeautifulSoup(raw_html, 'html.parser')
     cinemas = soup.find(class_='cards cards-grid')
     count_cinemas = []
-    for item in cinemas.find_all('div', {'itemprop': "address"}):
-        count = re.findall(r'\d+', str(item))
+    for cinema in cinemas.find_all('div', {'itemprop': "address"}):
+        count = re.findall(r'\d+', str(cinema))
         count_cinemas.append(count[0])
     title_list = []
     for i in cinemas.find_all('h3', {'class': 'card__title'}):
         title_list.append(i.text.strip().replace('«', '').replace('»', ''))
-    mixed_dict = dict(zip(title_list, count_cinemas))
-    return mixed_dict
+    titles_and_cinema_count_dict = dict(zip(title_list, count_cinemas))
+    return titles_and_cinema_count_dict
 
 
 def get_movie_rating(movie_title, proxies, out_queue):
