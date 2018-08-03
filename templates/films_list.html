@@ -35,19 +35,16 @@
       <div class="col-md-9 col-sm-8 col-xs-10">
         {% for title, cinemas, rating, votes, img_url in movie_list %}
         <hr>
-        <div class="col-md-9 col-sm-10 col-xs-10 company-info col-md-offset-3">
+        <div class="col-md-9 col-sm-10 col-xs-10 movie-info col-md-offset-3">
           <div class="col-md-4 col-sm-4 col-xs-4 text-center">
             <img class="image" src="{{ img_url }}" alt="{{ img_url }}" width="150">
           </div>
-          <div class="col-md-7 col-sm-6 col-xs-6">
+          <div class="col-md-7 col-sm-6 col-xs-6 inner-info">
             <h4>{{ title }}</h4>
             <hr>
-            <p>Количество кинотеатров: {{ cinemas }}</p>
-            <hr>
-            <p>Текущий рейтинг: {{ rating }}</p>
-            <hr>
-            <p>Количество голосов: {{ votes }}</p>
-            <hr>
+            <p>Количество кинотеатров: {{ cinemas }} <br>
+              Текущий рейтинг: {{ rating }}<br>
+              Количество голосов: {{ votes }} </p>
           </div>
         </div>
         {% endfor %}
@@ -56,7 +53,8 @@
   </div>
   <div class="footer text-center">
     <p>Настоящий сайт создан в исключительно учебных целях.
-      Все сведения о фильмах взяты с сайтов <a href="http://afisha.ru">Афиша</a> и <a href="http://kinopoisk.ru">Кинопоиск</a>.</p>
+      Все сведения о фильмах взяты с сайтов <a href="http://afisha.ru">Афиша</a> и <a href="http://kinopoisk.ru">Кинопоиск</a>.
+    </p>
   </div>
 </div><!-- /.container -->
 

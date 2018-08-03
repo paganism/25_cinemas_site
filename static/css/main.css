@@ -1,6 +1,15 @@
-#footer {
+.footer {
     position: fixed;
     left: 0; bottom: 0;
-    color: #fff;
     width: 100%;
    }
+
+.movie-info {
+    margin-top: 30px;
+}
+
+p {
+    margin-top: 50px; /* Отступ сверху */
+    margin-bottom: 0em; /* Отступ снизу */
+}
+
