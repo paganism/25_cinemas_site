@@ -57,9 +57,13 @@ def get_movie_rating(movie_title, proxies, out_queue):
             class_='ratingCount'
         ).get_text().replace(' ', '')
         url_img = soup.find('a', class_='popupBigImage').img['src']
-        return out_queue.put([rating_ball, rating_count, url_img])
+        movie_params = dict(rating_ball=rating_ball, rating_count=rating_count, img_url=url_img)
+        return out_queue.put(movie_params)
+        #return out_queue.put([rating_ball, rating_count, url_img])
     except AttributeError:
-        return out_queue.put(['0', '0', '/static/img/default-image.png'])
+        movie_params = dict(rating_ball='0', rating_count='0', img_url='/static/img/default-image.png')
+        # return out_queue.put(['0', '0', '/static/img/default-image.png'])
+        return out_queue.put(movie_params)
 
 
 def get_element(element):
@@ -81,16 +85,19 @@ def get_complete_info():
     afisha_content = fetch_afisha_page_data()
     cinema_count_and_titles_dict = fetch_cinema_count_and_titles_dict(afisha_content)
     proxies = fetch_proxy_list()
-    movie_list = []
+    full_movie_list = []
     out_queue = queue.Queue()
     for movie, count_of_cinema in cinema_count_and_titles_dict.items():
         thread = threading.Thread(target=get_movie_rating, args=(movie, proxies, out_queue))
         thread.start()
-        rating_ball, rating_count, img_url = out_queue.get()
-        movies = [movie, count_of_cinema, rating_ball, rating_count, img_url]
-        movie_list.append(movies)
-
-    sorted_list = sorted(movie_list, key=get_element, reverse=True)
+        movie_params = out_queue.get()
+        rating_ball = movie_params['rating_ball']
+        rating_count = movie_params['rating_count']
+        img_url = movie_params['img_url']
+        movie_param_list = [movie, count_of_cinema, rating_ball, rating_count, img_url]
+        full_movie_list.append(movie_param_list)
+    print(full_movie_list)
+    sorted_list = sorted(full_movie_list, key=get_element, reverse=True)
     top_movies = 10
     return sorted_list[:top_movies]
 
