@@ -59,10 +59,8 @@ def get_movie_rating(movie_title, proxies, out_queue):
         url_img = soup.find('a', class_='popupBigImage').img['src']
         movie_params = dict(rating_ball=rating_ball, rating_count=rating_count, img_url=url_img)
         return out_queue.put(movie_params)
-        #return out_queue.put([rating_ball, rating_count, url_img])
     except AttributeError:
         movie_params = dict(rating_ball='0', rating_count='0', img_url='/static/img/default-image.png')
-        # return out_queue.put(['0', '0', '/static/img/default-image.png'])
         return out_queue.put(movie_params)
 
 
@@ -96,7 +94,6 @@ def get_complete_info():
         img_url = movie_params['img_url']
         movie_param_list = [movie, count_of_cinema, rating_ball, rating_count, img_url]
         full_movie_list.append(movie_param_list)
-    print(full_movie_list)
     sorted_list = sorted(full_movie_list, key=get_element, reverse=True)
     top_movies = 10
     return sorted_list[:top_movies]
