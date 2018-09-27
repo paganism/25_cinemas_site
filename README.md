@@ -1,6 +1,6 @@
-# Telegraph Clone
+# Cinema Today
 
-This [site](http://80.211.16.55:8002) shows top 10 moviesaccording to the rating on kinopois.ru
+This [site](http://80.211.16.55:8002) shows top 10 movies according to the rating on kinopoisk.ru
 
 # How to deploy on localhost
 
