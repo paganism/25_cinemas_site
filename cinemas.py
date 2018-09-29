@@ -90,7 +90,6 @@ def get_complete_info():
     cinema_count_and_titles_dict = fetch_cinema_count_and_titles_dict(afisha_content)
     proxies = fetch_proxy_list()
     full_movie_list = []
-    out_queue = queue.Queue()
     for movie, count_of_cinema in cinema_count_and_titles_dict.items():
         movie_params_dict = get_movie_rating(movie, proxies)
         movie_params_queue = run_movie_rating_fetcher(movie_params_dict)
