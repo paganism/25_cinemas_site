@@ -32,7 +32,7 @@ def fetch_cinema_count_and_titles_dict(raw_html):
     return titles_and_cinema_count_dict
 
 
-def get_movie_rating(movie_title, proxies, out_queue):
+def get_movie_rating(movie_title, proxies):
     kp_url = 'https://www.kinopoisk.ru/index.php'
     payload = {'kp_query': movie_title, 'first': 'yes'}
     headers = {
@@ -58,18 +58,24 @@ def get_movie_rating(movie_title, proxies, out_queue):
         ).get_text().replace(' ', '')
         url_img = soup.find('a', class_='popupBigImage').img['src']
         movie_params = dict(rating_ball=rating_ball, rating_count=rating_count, img_url=url_img)
-        return out_queue.put(movie_params)
+        return movie_params
     except AttributeError:
         movie_params = dict(rating_ball='0', rating_count='0', img_url='/static/img/default-image.png')
-        return out_queue.put(movie_params)
+        return movie_params
 
 
-def get_element(element):
+def run_movie_rating_fetcher(movie_params):
+    movie_params_queue = queue.Queue()
+    movie_params_queue.put(movie_params)
+    return movie_params_queue
+
+
+def get_second_element(element):
     return float(element[2])
 
 
 def output_movies_to_console(movie_list, top):
-    sorted_list = sorted(movie_list, key=get_element, reverse=True)
+    sorted_list = sorted(movie_list, key=get_second_element, reverse=True)
     delimiter = '-' * 30
     for title, cinemas, rating, votes in sorted_list[:top]:
         print(delimiter)
@@ -86,15 +92,15 @@ def get_complete_info():
     full_movie_list = []
     out_queue = queue.Queue()
     for movie, count_of_cinema in cinema_count_and_titles_dict.items():
-        thread = threading.Thread(target=get_movie_rating, args=(movie, proxies, out_queue))
-        thread.start()
-        movie_params = out_queue.get()
+        movie_params_dict = get_movie_rating(movie, proxies)
+        movie_params_queue = run_movie_rating_fetcher(movie_params_dict)
+        movie_params = movie_params_queue.get()
         rating_ball = movie_params['rating_ball']
         rating_count = movie_params['rating_count']
         img_url = movie_params['img_url']
         movie_param_list = [movie, count_of_cinema, rating_ball, rating_count, img_url]
         full_movie_list.append(movie_param_list)
-    sorted_list = sorted(full_movie_list, key=get_element, reverse=True)
+    sorted_list = sorted(full_movie_list, key=get_second_element, reverse=True)
     top_movies = 10
     return sorted_list[:top_movies]
 
